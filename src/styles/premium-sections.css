@@ -52,15 +52,25 @@
 }
 
 .hero-name-gradient {
-  background: linear-gradient(110deg, #00e5ff 10%, #7dd3fc 42%, #a855f7 80%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
+  color: var(--text-primary);
+  text-shadow: 0 6px 22px rgba(var(--accent-cyan-rgb), 0.2);
 }
 
 .hero-name-shine {
   position: relative;
   display: inline-block;
+  color: inherit;
+  -webkit-text-fill-color: currentColor;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero-name-gradient .hero-name-shine {
+    background: linear-gradient(110deg, #00e5ff 10%, #7dd3fc 42%, #a855f7 80%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
 }
 
 .hero-name-shine::after {
@@ -75,9 +85,18 @@
 }
 
 [data-theme="light"] .hero-name-gradient {
-  background: linear-gradient(110deg, #0f172a 8%, #1e293b 48%, #334155 85%);
-  background-clip: text;
-  -webkit-background-clip: text;
+  color: #0f172a;
+  text-shadow: 0 5px 16px rgba(15, 23, 42, 0.12);
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  [data-theme="light"] .hero-name-gradient .hero-name-shine {
+    background: linear-gradient(110deg, #0f172a 8%, #1e293b 48%, #334155 85%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
 }
 
 .hero-typed-line {

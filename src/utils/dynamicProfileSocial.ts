@@ -52,6 +52,8 @@ type EducationContentPayload = {
   focusAreas?: string;
 };
 
+const DEFAULT_HERO_NAME = 'Prince Kumar';
+
 function withTimeout(url: string, timeoutMs = 5000): Promise<Response> {
   const controller = new AbortController();
   const timer = window.setTimeout(() => controller.abort(), timeoutMs);
@@ -84,14 +86,21 @@ function iconFor(platform: string): string {
   return '🔗';
 }
 
-function updateHeroProfile(profile: ProfilePayload): void {
+function applyHeroName(name?: string): void {
   const nameNode = document.querySelector<HTMLElement>('#hero-name-text');
+  if (!nameNode) return;
+
+  const nextName = (name ?? '').trim();
+  nameNode.textContent = nextName || DEFAULT_HERO_NAME;
+}
+
+function updateHeroProfile(profile: ProfilePayload): void {
   const taglineNode = document.querySelector<HTMLElement>('#hero-tagline-text');
   const imageNode = document.querySelector<HTMLImageElement>('#hero-profile-image');
   const aboutNode = document.querySelector<HTMLElement>('#about-bio-text');
   const fallbackNode = imageNode?.nextElementSibling as HTMLElement | null;
 
-  if (nameNode && profile.name) nameNode.textContent = profile.name;
+  applyHeroName(profile.name);
   if (taglineNode && profile.tagline) taglineNode.textContent = profile.tagline;
   if (aboutNode && profile.bio) aboutNode.textContent = profile.bio;
   const remoteImageUrl = (profile.profileImageUrl ?? '').trim();
@@ -122,10 +131,9 @@ function updateHeroProfile(profile: ProfilePayload): void {
 }
 
 function updateHeroContent(content: HeroContentPayload): void {
-  const nameNode = document.querySelector<HTMLElement>('#hero-name-text');
   const taglineNode = document.querySelector<HTMLElement>('#hero-tagline-text');
 
-  if (nameNode && content.name) nameNode.textContent = content.name;
+  applyHeroName(content.name);
   if (taglineNode && content.tagline) taglineNode.textContent = content.tagline;
 
   if (Array.isArray(content.typingTitles) && content.typingTitles.length > 0) {

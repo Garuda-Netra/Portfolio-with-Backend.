@@ -64,9 +64,6 @@ export default function Navbar(): string {
           <!-- Logo -->
           <a href="#hero" class="flex items-center gap-2 group nav-logo" aria-label="Go to top">
             <span class="nav-logo-mark">PK</span>
-            <span class="text-sm md:text-base font-semibold hidden sm:inline" style="color: var(--text-primary);">
-              Prince Kumar
-            </span>
           </a>
 
           <!-- Desktop Links -->
