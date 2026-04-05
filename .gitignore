@@ -1,0 +1,47 @@
+# -----------------------------
+# Dependencies
+# -----------------------------
+node_modules/
+server/node_modules/
+
+# -----------------------------
+# Build outputs
+# -----------------------------
+dist/
+server/dist/
+*.tsbuildinfo
+
+# -----------------------------
+# Environment files (secrets)
+# -----------------------------
+.env
+.env.*
+server/.env
+server/.env.*
+!.env.example
+!server/.env.example
+
+# -----------------------------
+# Runtime uploads / generated files
+# -----------------------------
+server/uploads/
+
+# -----------------------------
+# Logs
+# -----------------------------
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# -----------------------------
+# OS / editor noise
+# -----------------------------
+.DS_Store
+Thumbs.db
+.idea/
+
+# Keep workspace settings intentional.
+# If you want to commit team-shared VS Code config,
+# remove this line and selectively allow files.
+.vscode/

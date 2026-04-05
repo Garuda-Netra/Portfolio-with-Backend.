@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Prince Kumar Portfolio</title>
+  <link rel="icon" type="image/jpeg" href="/profile/profile.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="./admin.css" />
+</head>
+<body class="dashboard-page">
+  <div class="bg-orb orb-cyan" aria-hidden="true"></div>
+  <div class="bg-orb orb-purple" aria-hidden="true"></div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <header class="admin-header">
+    <div class="header-title">
+      <button id="mobile-menu-toggle" class="mobile-menu-toggle" type="button" aria-label="Open navigation">☰</button>
+      <span class="shield">🛡️</span>
+      <span>Prince Kumar - Admin Panel</span>
+    </div>
+    <div class="header-actions">
+      <span id="live-clock" class="clock"></span>
+      <button id="notification-bell" class="notification-bell" type="button" aria-label="Notifications">
+        🔔
+        <span id="notification-badge" class="notification-badge hidden">0</span>
+      </button>
+      <div id="notification-dropdown" class="notification-dropdown hidden">
+        <div class="notification-head">
+          <p>Notifications</p>
+          <button id="notifications-mark-read" class="admin-btn" type="button">Mark all read</button>
+        </div>
+        <div id="notification-list" class="notification-list"></div>
+      </div>
+      <a class="portfolio-link" href="/index.html" target="_blank" rel="noreferrer">Back to Portfolio <span aria-hidden="true">↗</span></a>
+      <div class="avatar" aria-label="Admin avatar">P</div>
+    </div>
+  </header>
+
+  <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+  <aside id="sidebar" class="admin-sidebar" aria-label="Admin navigation">
+    <div class="sidebar-top">
+      <button id="sidebar-toggle" class="sidebar-toggle" type="button" aria-label="Toggle sidebar">☰</button>
+      <p class="terminal-prompt">prince@admin:~$</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-section="dashboard" data-label="Dashboard"><span class="icon">🏠</span><span class="label">Dashboard</span></button>
+      <button class="nav-item" data-section="profile" data-label="Profile"><span class="icon">👤</span><span class="label">Profile</span></button>
+      <div class="nav-divider" aria-hidden="true"></div>
+      <button class="nav-item" data-section="messages" data-label="Messages"><span class="icon">📥</span><span class="label">Messages</span><span id="unread-badge" class="badge hidden">0</span></button>
+      <button class="nav-item" data-section="content" data-label="Content"><span class="icon">📄</span><span class="label">Content</span></button>
+      <button class="nav-item" data-section="certifications" data-label="Certs"><span class="icon">📋</span><span class="label">Certs</span></button>
+      <div class="nav-divider" aria-hidden="true"></div>
+      <button class="nav-item" data-section="social" data-label="Social Links"><span class="icon">🔗</span><span class="label">Social Links</span></button>
+      <button class="nav-item" data-section="blog" data-label="Blog"><span class="icon">📝</span><span class="label">Blog</span></button>
+      <div class="nav-divider" aria-hidden="true"></div>
+      <button class="nav-item" data-section="toggles" data-label="Toggles"><span class="icon">⚙️</span><span class="label">Toggles</span></button>
+      <button class="nav-item" data-section="resume" data-label="Resume"><span class="icon">📄</span><span class="label">Resume</span></button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <p class="admin-name">Admin: <strong>prince</strong></p>
+      <button id="logout-button" class="logout-button" type="button">Logout</button>
+    </div>
+  </aside>
+
+  <main class="admin-main" id="admin-main">
+    <section class="admin-section" data-panel="dashboard">
+      <div class="welcome-block">
+        <h1>Welcome back, Prince.</h1>
+        <p id="today-date" class="today-date"></p>
+        <p id="security-quote" class="security-quote"></p>
+      </div>
+
+      <div class="stats-grid">
+        <article class="stat-card">
+          <p class="stat-icon glow-cyan">📥</p>
+          <p class="stat-number" data-stat="unread">0</p>
+          <p class="stat-label">Unread Messages</p>
+          <p class="stat-trend" data-trend="unread">↔ stable</p>
+        </article>
+        <article class="stat-card">
+          <p class="stat-icon glow-cyan">📋</p>
+          <p class="stat-number" data-stat="certifications">0</p>
+          <p class="stat-label">Total Certifications</p>
+          <p class="stat-trend" data-trend="certifications">↔ stable</p>
+        </article>
+        <article class="stat-card">
+          <p class="stat-icon glow-green">📄</p>
+          <p class="stat-number" data-stat="downloads">0</p>
+          <p class="stat-label">Resume Downloads</p>
+          <p class="stat-trend" data-trend="downloads">↔ stable</p>
+        </article>
+        <article class="stat-card">
+          <p class="stat-icon">🟢</p>
+          <p class="stat-number stat-status" id="server-status">Checking...</p>
+          <p class="stat-label">Server Status</p>
+          <p class="stat-trend" data-trend="server">↔ stable</p>
+        </article>
+      </div>
+
+      <div class="quick-stats-row">
+        <article class="quick-stat-card"><p class="label">Published Posts</p><p id="quick-published-posts" class="value">0</p></article>
+        <article class="quick-stat-card"><p class="label">Active Social Links</p><p id="quick-social-links" class="value">0</p></article>
+        <article class="quick-stat-card"><p class="label">Last Admin Login</p><p id="quick-last-login" class="value">Unknown</p></article>
+        <article class="quick-stat-card"><p class="label">Server Uptime</p><p id="quick-server-uptime" class="value">--</p></article>
+      </div>
+
+      <article class="dashboard-profile-strip">
+        <div id="dashboard-profile-avatar" class="dashboard-profile-avatar" aria-label="Admin profile preview">PK</div>
+        <div class="dashboard-profile-copy">
+          <p id="dashboard-profile-name" class="dashboard-profile-name">Prince Kumar</p>
+          <p id="dashboard-profile-title" class="dashboard-profile-title">Cybersecurity Enthusiast</p>
+        </div>
+        <button class="admin-btn" data-jump="profile" type="button">Edit Profile</button>
+      </article>
+
+      <div class="dashboard-columns">
+        <article class="panel-card">
+          <div class="panel-head">
+            <h2>Recent Messages</h2>
+          </div>
+          <div id="recent-messages" class="recent-messages"></div>
+        </article>
+
+        <article class="panel-card">
+          <div class="panel-head">
+            <h2>Quick Actions</h2>
+          </div>
+          <div class="quick-actions">
+            <button class="quick-action" data-jump="resume">Upload Resume</button>
+            <button class="quick-action" data-jump="certifications">Add Certification</button>
+            <button class="quick-action" data-jump="blog">New Blog Post</button>
+            <button class="quick-action" data-jump="toggles">Open Toggles</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="admin-section hidden" data-panel="messages">
+      <div class="messages-shell">
+        <article class="messages-list-panel">
+          <div class="messages-head">
+            <h2>Message Inbox</h2>
+            <div class="message-filters" role="tablist" aria-label="Message filters">
+              <button class="message-filter active" data-filter="all" type="button">All</button>
+              <button class="message-filter" data-filter="unread" type="button">
+                Unread
+                <span id="messages-unread-badge" class="mini-badge">0</span>
+              </button>
+              <button class="message-filter" data-filter="starred" type="button">Starred</button>
+            </div>
+          </div>
+          <div id="message-list" class="message-list"></div>
+        </article>
+
+        <article class="messages-detail-panel" id="message-detail"></article>
+      </div>
+    </section>
+    <section class="admin-section hidden" data-panel="content">
+      <article class="content-manager-card">
+        <div class="content-topbar">
+          <h2>Content Manager</h2>
+        </div>
+
+        <div id="content-loading" class="loading-skeleton content-skeleton"></div>
+        <div id="content-error" class="error-state hidden">
+          <p>Failed to load content entries.</p>
+          <button id="retry-content" class="admin-btn" type="button">Retry</button>
+        </div>
+
+        <div id="content-accordion" class="content-accordion hidden">
+          <article class="accordion-item" data-section="hero">
+            <button class="accordion-header" type="button">
+              <span>Hero Section</span>
+              <span class="section-dot" data-dot="hero"></span>
+              <span class="accordion-arrow">▾</span>
+            </button>
+            <div class="accordion-body">
+              <form class="content-form" data-content-form="hero">
+                <div class="admin-field"><input id="content-hero-name" type="text" placeholder=" " /><label for="content-hero-name">Name</label></div>
+                <div class="admin-field"><input id="content-hero-title" type="text" placeholder=" " /><label for="content-hero-title">Title</label></div>
+                <div class="admin-field"><textarea id="content-hero-tagline" rows="3" placeholder=" "></textarea><label for="content-hero-tagline">Tagline</label></div>
+                <div class="typing-manager">
+                  <h3>Typing Titles</h3>
+                  <div id="content-hero-typing-list" class="typing-tags"></div>
+                  <div class="typing-input-row">
+                    <input id="content-hero-typing-input" type="text" placeholder="Add typing title" />
+                    <button id="content-hero-typing-add" class="admin-btn" type="button">Add</button>
+                  </div>
+                </div>
+                <div class="section-actions">
+                  <button class="admin-btn primary" type="submit">Save Changes</button>
+                  <button class="admin-btn" data-reset="hero" type="button">Reset to Default</button>
+                  <button class="admin-btn" data-preview="hero" type="button">Preview</button>
+                </div>
+              </form>
+            </div>
+          </article>
+
+          <article class="accordion-item" data-section="about">
+            <button class="accordion-header" type="button">
+              <span>About Section</span>
+              <span class="section-dot" data-dot="about"></span>
+              <span class="accordion-arrow">▾</span>
+            </button>
+            <div class="accordion-body">
+              <form class="content-form" data-content-form="about">
+                <div class="admin-field"><textarea id="content-about-paragraph1" rows="3" placeholder=" "></textarea><label for="content-about-paragraph1">Paragraph 1</label></div>
+                <div class="admin-field"><textarea id="content-about-paragraph2" rows="3" placeholder=" "></textarea><label for="content-about-paragraph2">Paragraph 2</label></div>
+                <div class="admin-field"><textarea id="content-about-paragraph3" rows="3" placeholder=" "></textarea><label for="content-about-paragraph3">Paragraph 3</label></div>
+                <div class="admin-field"><textarea id="content-about-paragraph4" rows="3" placeholder=" "></textarea><label for="content-about-paragraph4">Paragraph 4</label></div>
+                <div class="typing-manager">
+                  <h3>Stats</h3>
+                  <div id="content-about-stats-list" class="stats-edit-list"></div>
+                  <button id="content-about-add-stat" class="admin-btn" type="button">Add Stat</button>
+                </div>
+                <div class="section-actions">
+                  <button class="admin-btn primary" type="submit">Save Changes</button>
+                  <button class="admin-btn" data-reset="about" type="button">Reset to Default</button>
+                  <button class="admin-btn" data-preview="about" type="button">Preview</button>
+                </div>
+              </form>
+            </div>
+          </article>
+
+          <article class="accordion-item" data-section="projects">
+            <button class="accordion-header" type="button">
+              <span>Projects Section</span>
+              <span class="section-dot" data-dot="projects"></span>
+              <span class="accordion-arrow">▾</span>
+            </button>
+            <div class="accordion-body">
+              <form class="content-form" data-content-form="projects">
+                <div id="content-projects-list" class="projects-editor-list"></div>
+                <button id="content-projects-add" class="admin-btn" type="button">Add Project</button>
+                <div class="section-actions">
+                  <button class="admin-btn primary" type="submit">Save Changes</button>
+                  <button class="admin-btn" data-reset="projects" type="button">Reset to Default</button>
+                  <button class="admin-btn" data-preview="projects" type="button">Preview</button>
+                </div>
+              </form>
+            </div>
+          </article>
+
+          <article class="accordion-item" data-section="education">
+            <button class="accordion-header" type="button">
+              <span>Education Section</span>
+              <span class="section-dot" data-dot="education"></span>
+              <span class="accordion-arrow">▾</span>
+            </button>
+            <div class="accordion-body">
+              <form class="content-form" data-content-form="education">
+                <div class="admin-field"><input id="content-education-degree" type="text" placeholder=" " /><label for="content-education-degree">Degree</label></div>
+                <div class="admin-field"><input id="content-education-status" type="text" placeholder=" " /><label for="content-education-status">Status</label></div>
+                <div class="admin-field"><input id="content-education-institution" type="text" placeholder=" " /><label for="content-education-institution">Institution</label></div>
+                <div class="admin-field"><textarea id="content-education-focus" rows="3" placeholder=" "></textarea><label for="content-education-focus">Focus Areas</label></div>
+                <div class="section-actions">
+                  <button class="admin-btn primary" type="submit">Save Changes</button>
+                  <button class="admin-btn" data-reset="education" type="button">Reset to Default</button>
+                  <button class="admin-btn" data-preview="education" type="button">Preview</button>
+                </div>
+              </form>
+            </div>
+          </article>
+        </div>
+      </article>
+    </section>
+
+    <section class="admin-section hidden" data-panel="certifications">
+      <article class="certifications-manager-card">
+        <div class="certifications-topbar">
+          <h2>Certifications (Certs)</h2>
+          <button id="toggle-cert-ordering" class="admin-btn" type="button" aria-pressed="false">Ordering: Off</button>
+          <button id="add-certification" class="admin-btn primary" type="button">＋ Add New</button>
+          <button id="delete-all-certifications" class="admin-btn danger" type="button">🗑️ Clear All Records</button>
+        </div>
+        <p id="cert-ordering-hint" class="cert-ordering-hint hidden">Ordering mode is ON. Drag and drop certification cards to save your preferred order.</p>
+
+        <div id="cert-loading" class="loading-skeleton cert-skeleton"></div>
+        <div id="cert-error" class="error-state hidden">
+          <p>Failed to load certifications.</p>
+          <button id="retry-certifications" class="admin-btn" type="button">Retry</button>
+        </div>
+        <div id="cert-empty" class="empty-state hidden">No certifications added yet. Click Add New to get started.</div>
+        <div id="cert-list" class="cert-list hidden"></div>
+      </article>
+    </section>
+    <section class="admin-section hidden" data-panel="profile">
+      <div class="profile-manager-wrap">
+        <article class="profile-card profile-image-card">
+          <h2>Profile Image</h2>
+          <div class="profile-image-stack">
+            <div id="profile-image-preview" class="profile-image-preview" aria-label="Current profile image">
+              <span class="profile-initials">PK</span>
+            </div>
+            <div class="profile-upload-actions">
+              <button id="upload-photo-btn" class="admin-btn" type="button">Upload</button>
+              <button id="change-photo-btn" class="admin-btn primary" type="button" disabled>Change</button>
+            </div>
+            <p id="selected-image-name" class="selected-image-name">No file selected.</p>
+            <input id="profile-image-input" type="file" accept="image/png,image/jpeg,image/webp" hidden />
+            <div id="upload-progress-wrap" class="progress-wrap hidden" aria-hidden="true">
+              <div id="upload-progress-bar" class="progress-bar"></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="profile-card profile-form-card">
+          <h2>Personal Info</h2>
+          <div id="profile-loading" class="loading-skeleton profile-skeleton"></div>
+          <div id="profile-error" class="error-state hidden">
+            <p>Failed to load profile data.</p>
+            <button id="retry-profile" class="admin-btn" type="button">Retry</button>
+          </div>
+
+          <form id="profile-form" class="admin-form hidden" novalidate>
+            <div class="admin-field">
+              <input id="profile-name" name="name" type="text" placeholder=" " required />
+              <label for="profile-name">Name</label>
+            </div>
+            <div class="admin-field">
+              <input id="profile-title" name="title" type="text" placeholder=" " required />
+              <label for="profile-title">Title</label>
+            </div>
+            <div class="admin-field">
+              <input id="profile-email" name="email" type="email" placeholder=" " required />
+              <label for="profile-email">Email</label>
+            </div>
+            <div class="admin-field">
+              <input id="profile-github" name="githubUrl" type="url" placeholder=" " />
+              <label for="profile-github">GitHub URL</label>
+            </div>
+            <div class="admin-field">
+              <input id="profile-linkedin" name="linkedinUrl" type="url" placeholder=" " />
+              <label for="profile-linkedin">LinkedIn URL</label>
+            </div>
+
+            <div class="admin-field">
+              <textarea id="profile-tagline" name="tagline" rows="3" placeholder=" "></textarea>
+              <label for="profile-tagline">Tagline</label>
+              <small id="tagline-count" class="char-count">0 / 180</small>
+            </div>
+
+            <div class="admin-field">
+              <textarea id="profile-bio" name="bio" rows="5" placeholder=" "></textarea>
+              <label for="profile-bio">Bio</label>
+              <small id="bio-count" class="char-count">0 / 800</small>
+            </div>
+
+            <div class="typing-manager">
+              <h3>Typing Titles</h3>
+              <div id="typing-titles-list" class="typing-tags"></div>
+              <div class="typing-input-row">
+                <input id="typing-title-input" type="text" placeholder="Add typing title" />
+                <button id="add-typing-title" class="admin-btn" type="button">Add</button>
+              </div>
+            </div>
+
+            <button id="save-profile-btn" class="admin-btn primary full-width" type="submit">Save Profile</button>
+          </form>
+        </article>
+
+        <article class="profile-card password-card">
+          <h2>Account Security</h2>
+          <form id="username-form" class="admin-form" novalidate>
+            <div class="admin-field">
+              <input id="new-username" type="text" placeholder=" " required />
+              <label for="new-username">New Username</label>
+            </div>
+            <div class="admin-field">
+              <input id="username-password" type="password" placeholder=" " required />
+              <label for="username-password">Current Password</label>
+            </div>
+            <button id="change-username-btn" class="admin-btn" type="submit">Change Username</button>
+          </form>
+
+          <div class="account-divider" aria-hidden="true"></div>
+
+          <h3 class="account-subtitle">Change Password</h3>
+          <form id="password-form" class="admin-form" novalidate>
+            <div class="admin-field">
+              <input id="current-password" type="password" placeholder=" " required />
+              <label for="current-password">Current Password</label>
+            </div>
+            <div class="admin-field">
+              <input id="new-password" type="password" placeholder=" " required />
+              <label for="new-password">New Password</label>
+            </div>
+            <div class="password-strength">
+              <div id="password-strength-bar" class="password-strength-bar"></div>
+            </div>
+            <div class="admin-field">
+              <input id="confirm-password" type="password" placeholder=" " required />
+              <label for="confirm-password">Confirm Password</label>
+            </div>
+            <button id="change-password-btn" class="admin-btn primary" type="submit">Change Password</button>
+          </form>
+        </article>
+      </div>
+    </section>
+
+    <section class="admin-section hidden" data-panel="social">
+      <article class="social-card">
+        <div class="social-topbar">
+          <h2>Social Links</h2>
+          <button id="add-social-link" class="admin-btn primary" type="button">＋ Add New Link</button>
+        </div>
+
+        <div id="social-loading" class="loading-skeleton social-skeleton"></div>
+        <div id="social-error" class="error-state hidden">
+          <p>Failed to load social links.</p>
+          <button id="retry-social" class="admin-btn" type="button">Retry</button>
+        </div>
+        <div id="social-links-list" class="social-links-list hidden"></div>
+      </article>
+    </section>
+    <section class="admin-section hidden" data-panel="blog"></section>
+    <section class="admin-section hidden" data-panel="toggles">
+      <article class="toggles-card">
+        <h2>Portfolio Feature Controls</h2>
+        <p class="toggles-subtitle">Enable or disable features on your portfolio.</p>
+        <div id="settings-warning" class="settings-warning-banner hidden">⚠️ Some portfolio features are currently disabled.</div>
+
+        <div id="toggles-loading" class="loading-skeleton toggles-skeleton"></div>
+        <div id="toggles-error" class="error-state hidden">
+          <p>Failed to load settings.</p>
+          <button id="retry-toggles" class="admin-btn" type="button">Retry</button>
+        </div>
+
+        <div id="toggle-grid" class="toggle-grid hidden"></div>
+
+        <div class="toggles-actions">
+          <button id="reset-settings" class="admin-btn danger" type="button">Reset All to Default</button>
+        </div>
+      </article>
+    </section>
+    <section class="admin-section hidden" data-panel="resume"></section>
+  </main>
+
+  <div id="toast-root" class="toast-root" aria-live="polite" aria-atomic="true"></div>
+
+  <div id="social-modal" class="admin-modal hidden" role="dialog" aria-modal="true" aria-label="Social link editor">
+    <div class="admin-modal-card">
+      <h3 id="social-modal-title">Add Social Link</h3>
+      <form id="social-form" class="admin-form" novalidate>
+        <div class="admin-field">
+          <input id="social-url" type="url" placeholder=" " required />
+          <label for="social-url">URL</label>
+        </div>
+        <div class="admin-field">
+          <input id="social-display" type="text" placeholder=" " />
+          <label for="social-display">Display Text</label>
+        </div>
+        <label class="switch-row" for="social-visible">
+          <span>Visible</span>
+          <input id="social-visible" type="checkbox" checked />
+        </label>
+        <div class="modal-actions">
+          <button id="social-cancel" class="admin-btn" type="button">Cancel</button>
+          <button id="social-save" class="admin-btn primary" type="submit">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="delete-modal" class="admin-modal hidden" role="dialog" aria-modal="true" aria-label="Delete confirmation">
+    <div class="admin-modal-card">
+      <h3>Delete Link</h3>
+      <p>Are you sure you want to delete this link?</p>
+      <div class="modal-actions">
+        <button id="delete-cancel" class="admin-btn" type="button">Cancel</button>
+        <button id="delete-confirm" class="admin-btn danger" type="button">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="cert-modal" class="admin-modal hidden" role="dialog" aria-modal="true" aria-label="Certification editor">
+    <div class="admin-modal-card cert-modal-card">
+      <h3 id="cert-modal-title">Add Certification</h3>
+      <form id="cert-form" class="admin-form" novalidate>
+        <div class="admin-field"><input id="cert-name" type="text" placeholder=" " required /><label for="cert-name">Name</label></div>
+        <div class="admin-field"><input id="cert-organization" type="text" placeholder=" " required /><label for="cert-organization">Organization</label></div>
+        <div class="admin-field">
+          <select id="cert-category" required>
+            <option value="Cybersecurity">Cybersecurity</option>
+            <option value="Networking">Networking</option>
+            <option value="Offensive Security">Offensive Security</option>
+            <option value="Digital Forensics">Digital Forensics</option>
+            <option value="Web Security">Web Security</option>
+            <option value="Blue Team">Blue Team</option>
+            <option value="Other">Other</option>
+          </select>
+          <label class="select-label" for="cert-category">Category</label>
+        </div>
+        <div class="admin-field"><input id="cert-link" type="text" placeholder=" " /><label for="cert-link">Credential Link (Google Drive, etc.)</label></div>
+        <div class="admin-field"><input id="cert-date" type="text" placeholder=" " /><label for="cert-date">Date Earned (Optional)</label></div>
+
+        <div class="cert-thumbnail-section">
+          <label class="cert-thumbnail-label">Certificate Thumbnail</label>
+          <input id="cert-thumbnail-input" type="file" accept="image/*" hidden />
+          <button id="cert-pick-thumbnail" class="admin-btn" type="button">📷 Upload Image</button>
+          <p id="cert-selected-thumbnail" class="selected-image-name">No image selected</p>
+          <div id="cert-thumbnail-preview" class="cert-thumbnail-preview"></div>
+        </div>
+
+        <div class="modal-actions">
+          <button id="cert-cancel" class="admin-btn" type="button">Cancel</button>
+          <button id="cert-save" class="admin-btn primary" type="submit">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="cert-delete-modal" class="admin-modal hidden" role="dialog" aria-modal="true" aria-label="Delete certification confirmation">
+    <div class="admin-modal-card">
+      <h3>Delete Certification</h3>
+      <p id="cert-delete-text">Delete this certification? This cannot be undone.</p>
+      <div class="modal-actions">
+        <button id="cert-delete-cancel" class="admin-btn" type="button">Cancel</button>
+        <button id="cert-delete-confirm" class="admin-btn danger" type="button">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./dashboard.ts"></script>
+</body>
+</html>

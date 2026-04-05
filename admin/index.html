@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login - Prince Kumar Portfolio</title>
+  <link rel="icon" type="image/jpeg" href="/profile/profile.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="./admin.css" />
+</head>
+<body>
+  <div class="bg-orb orb-cyan" aria-hidden="true"></div>
+  <div class="bg-orb orb-purple" aria-hidden="true"></div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <main class="admin-shell">
+    <section class="login-card" aria-labelledby="admin-title">
+      <div class="icon-wrap" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" role="img" aria-label="Secure lock icon">
+          <path d="M7 10V7a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="5" y="10" width="14" height="11" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M12 14.5v2.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <h1 id="admin-title">Admin Access</h1>
+      <p class="subtitle">Authorized personnel only</p>
+
+      <div class="terminal-typing" aria-live="polite">
+        <p class="terminal-line" data-line="Initializing secure channel..."></p>
+        <p class="terminal-line" data-line="Verifying access level... ADMIN"></p>
+        <p class="terminal-line" data-line="Authentication required."></p>
+      </div>
+
+      <div class="divider" aria-hidden="true"></div>
+
+      <form id="login-form" novalidate>
+        <div class="field-wrap">
+          <input id="username" name="username" type="text" autocomplete="username" required placeholder=" " />
+          <label for="username">Username</label>
+        </div>
+
+        <div class="field-wrap password-wrap">
+          <input id="password" name="password" type="password" autocomplete="current-password" required placeholder=" " />
+          <label for="password">Password</label>
+          <button id="toggle-password" class="toggle-password" type="button" aria-label="Show password">Show</button>
+        </div>
+
+        <button id="login-button" class="login-button" type="submit">
+          <span class="button-text">Authenticate</span>
+          <span class="spinner" aria-hidden="true"></span>
+        </button>
+
+        <p id="error-message" class="error-message" role="alert" aria-live="assertive"></p>
+      </form>
+
+      <p class="back-link-wrap">
+        <a class="back-link" href="/index.html">Back to Portfolio</a>
+      </p>
+    </section>
+
+    <div class="server-status" id="server-status">
+      <div class="status-dot" id="status-dot"></div>
+      <span class="status-text" id="status-text">Checking server...</span>
+    </div>
+  </main>
+
+  <script type="module" src="./login.ts"></script>
+</body>
+</html>

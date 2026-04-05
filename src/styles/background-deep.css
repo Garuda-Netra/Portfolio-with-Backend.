@@ -1,0 +1,383 @@
+/* Step 8 deep atmosphere: dark mode only */
+html[data-theme='dark'] {
+  --bg-primary: #020509;
+  --bg-secondary: #030910;
+  --bg-tertiary: #040b14;
+  --bg-card: #060c18;
+  --glass-bg: rgba(6, 12, 24, 0.65);
+  --glass-border: rgba(0, 229, 255, 0.06);
+  --text-primary: #e8edf4;
+  --text-secondary: #aab4c2;
+}
+
+html[data-theme='dark'] body {
+  background: #020509;
+}
+
+html[data-theme='dark'] body::before,
+html[data-theme='dark'] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -2;
+}
+
+html[data-theme='dark'] body::before {
+  background:
+    radial-gradient(70vw 70vw at 50% -5%, #081420 0%, rgba(8, 20, 32, 0) 72%),
+    radial-gradient(1000px 1000px at 86% 10%, rgba(0, 229, 255, 0.025), transparent 72%),
+    radial-gradient(900px 900px at 12% 88%, rgba(168, 85, 247, 0.018), transparent 74%),
+    radial-gradient(circle at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.4) 100%);
+}
+
+html[data-theme='dark'] body::after {
+  z-index: -1;
+  opacity: 0.03;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.35) 0.5px, transparent 0.5px),
+    radial-gradient(rgba(255, 255, 255, 0.25) 0.5px, transparent 0.5px);
+  background-size: 3px 3px, 4px 4px;
+  background-position: 0 0, 1px 1px;
+  mix-blend-mode: soft-light;
+}
+
+html[data-theme='dark'] .section-container {
+  background-color: transparent;
+}
+
+html[data-theme='dark'] .section-container:nth-of-type(even) {
+  background-color: transparent;
+}
+
+html[data-theme='dark'] .glass-card {
+  background: rgba(6, 12, 24, 0.65);
+  border-color: rgba(0, 229, 255, 0.06);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Scanner + encrypted + clue styles, scoped enhancements */
+#scan-portfolio-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+#scan-portfolio-btn::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 1px solid rgba(0, 229, 255, 0.45);
+  animation: scanBtnPulse 2.1s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.vulnerability-scanner-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 12100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4vh 3vw;
+  background: rgba(2, 5, 9, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.vulnerability-scanner-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.vulnerability-scanner-modal {
+  width: min(980px, 95vw);
+  height: min(80vh, 760px);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  background: linear-gradient(145deg, #020508, #0a0f1a);
+  box-shadow: 0 0 28px rgba(0, 229, 255, 0.26);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.vulnerability-scanner-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.22);
+  color: #00e5ff;
+}
+
+.vulnerability-scanner-titlebar p {
+  flex: 1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.84rem;
+}
+
+.vulnerability-scanner-dots {
+  display: inline-flex;
+  gap: 0.4rem;
+}
+
+.vulnerability-scanner-dots .dot {
+  width: 0.74rem;
+  height: 0.74rem;
+  border-radius: 50%;
+}
+
+.vulnerability-scanner-dots .dot-red { background: #ff5f57; }
+.vulnerability-scanner-dots .dot-yellow { background: #ffbd2e; }
+.vulnerability-scanner-dots .dot-green { background: #27c93f; }
+
+#vulnerability-scanner-close {
+  border: 0;
+  color: #9ca3af;
+  font-size: 1.3rem;
+  background: transparent;
+}
+
+.vulnerability-scanner-output {
+  flex: 1;
+  overflow: auto;
+  padding: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1.5;
+}
+
+.scan-line { margin-bottom: 0.22rem; }
+.scan-pre { white-space: pre; }
+.scan-tone-primary,
+.scan-tone-secondary,
+.scan-tone-muted { color: #00bf63; }
+.scan-tone-cyan { color: #00e5ff; }
+.scan-tone-purple { color: #a855f7; }
+.scan-tone-prompt { color: #00cc6a; }
+.scan-tone-error { color: #ff6b6b; }
+.scan-tone-success { color: #00e676; text-shadow: 0 0 8px rgba(0, 230, 118, 0.35); }
+.scan-tone-warning { color: #ffbd2e; }
+.scan-check-flash { animation: scanCheckFlash 380ms ease; }
+
+.vulnerability-scanner-footer {
+  border-top: 1px solid rgba(0, 229, 255, 0.18);
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.vulnerability-scan-close-btn {
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  color: #00e5ff;
+  background: rgba(0, 229, 255, 0.08);
+  border-radius: 0.65rem;
+  padding: 0.45rem 0.8rem;
+}
+
+.encrypted-message-wrap {
+  max-width: 78rem;
+  margin: 0 auto;
+}
+
+.hero-profile-inner {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-profile-photo {
+  position: relative;
+  z-index: 1;
+  transition: opacity 0.35s ease;
+}
+
+.encrypted-message-card { padding: 1.2rem; }
+
+.encrypted-message-title {
+  color: #00e5ff;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.encrypted-message-subtitle {
+  margin-top: 0.35rem;
+  color: #aab4c2;
+}
+
+.encrypted-tabs {
+  margin-top: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.encrypted-tab {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #aab4c2;
+  padding: 0.32rem 0.72rem;
+  font-size: 0.82rem;
+}
+
+.encrypted-tab.active {
+  color: #00e5ff;
+  border-bottom-color: #00e5ff;
+}
+
+.encrypted-payload {
+  margin-top: 0.85rem;
+  padding: 0.9rem;
+  border-radius: 0.8rem;
+  background: rgba(3, 8, 16, 0.72);
+  border: 1px solid rgba(0, 204, 106, 0.18);
+  color: #00cc6a;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+  line-height: 1.65;
+  min-height: 130px;
+}
+
+.encrypted-truncated {
+  margin-top: 0.45rem;
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+.decrypt-message-btn {
+  margin-top: 0.95rem;
+  border: 1px solid rgba(0, 229, 255, 0.45);
+  background: linear-gradient(120deg, #00cc6a, #00e5ff);
+  color: #020509;
+  border-radius: 0.8rem;
+  padding: 0.58rem 0.95rem;
+  font-weight: 700;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.decrypt-message-btn:hover {
+  box-shadow: 0 0 18px rgba(0, 229, 255, 0.28);
+  transform: translateY(-1px);
+}
+
+.decrypt-message-btn.done {
+  border-color: rgba(0, 230, 118, 0.45);
+  background: rgba(0, 230, 118, 0.15);
+  color: #00e676;
+}
+
+.decrypted-output {
+  margin-top: 0.9rem;
+  color: #e8edf4;
+  min-height: 2.2rem;
+}
+
+.decrypted-output.decrypted {
+  text-shadow: 0 0 10px rgba(0, 230, 118, 0.24);
+}
+
+.decrypted-signature {
+  margin-top: 0.4rem;
+  color: #00e5ff;
+  font-style: italic;
+}
+
+[data-theme='light'] .encrypted-payload {
+  color: #0a1628;
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(10, 22, 40, 0.15);
+}
+
+[data-theme='light'] .decrypt-message-btn {
+  background: linear-gradient(120deg, #1d4ed8, #0891b2);
+  color: #f8fafc;
+}
+
+.ctf-clue {
+  margin-top: 0.6rem;
+  font-size: 0.67rem;
+  opacity: 0.6;
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.ctf-clue-revealed,
+.ctf-clue:hover {
+  opacity: 0.24;
+  color: var(--accent-cyan);
+}
+
+.achievement-toast-root {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 12120;
+  pointer-events: none;
+}
+
+.achievement-toast {
+  width: min(340px, 88vw);
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  padding: 0.75rem 0.8rem;
+  border-radius: 0.8rem;
+  border: 1px solid rgba(0, 229, 255, 0.22);
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 28px rgba(2, 6, 23, 0.3);
+  transform: translateX(110%);
+  opacity: 0;
+  transition: transform 0.28s ease, opacity 0.28s ease;
+}
+
+.achievement-toast.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.achievement-icon { font-size: 1.15rem; }
+.achievement-title {
+  color: #00e5ff;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.achievement-message {
+  color: #e8edf4;
+  margin-top: 0.18rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+@keyframes scanBtnPulse {
+  0%,
+  100% { opacity: 0.25; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.03); }
+}
+
+@keyframes scanCheckFlash {
+  0% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+@media (max-width: 767px) {
+  .vulnerability-scanner-overlay { padding: 0; }
+
+  .vulnerability-scanner-modal {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+  }
+
+  .vulnerability-scanner-output { font-size: 0.76rem; }
+}
