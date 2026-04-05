@@ -38,6 +38,47 @@ function clearError(): void {
   errorMessage.classList.remove('show');
 }
 
+function withCacheVersion(url: string, version?: string): string {
+  if (!version) return url;
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}v=${encodeURIComponent(version)}`;
+}
+
+function setAdminFavicon(url?: string, version?: string): void {
+  const favicon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
+  if (!favicon) return;
+
+  const remoteUrl = (url ?? '').trim();
+  if (!remoteUrl || !/^https?:\/\//i.test(remoteUrl)) {
+    favicon.href = '/favicon.svg';
+    favicon.type = 'image/svg+xml';
+    return;
+  }
+
+  favicon.href = withCacheVersion(remoteUrl, version);
+  favicon.removeAttribute('type');
+}
+
+async function loadAdminFavicon(): Promise<void> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/profile`, {
+      method: 'GET'
+    });
+    if (!response.ok) return;
+
+    const data = (await response.json()) as {
+      profile?: {
+        profileImageUrl?: string;
+        lastUpdated?: string;
+      };
+    };
+
+    setAdminFavicon(data.profile?.profileImageUrl, data.profile?.lastUpdated);
+  } catch {
+    setAdminFavicon();
+  }
+}
+
 function setLoading(isLoading: boolean): void {
   if (!loginButton || !buttonText || !usernameInput || !passwordInput) {
     return;
@@ -255,6 +296,7 @@ async function init(): Promise<void> {
 
   startTerminalTyping();
   attachPasswordToggle();
+  void loadAdminFavicon();
   void checkServerStatus();
   window.setInterval(() => {
     void checkServerStatus();

@@ -3447,9 +3447,11 @@ body.dashboard-page .notification-dropdown {
   top: calc(100% + 8px);
   right: 76px;
   width: min(300px, 86vw);
+  height: auto;
   border: 1px solid rgba(0, 229, 255, 0.2);
   background: rgba(6, 12, 24, 0.92);
   border-radius: 0.82rem;
+  overflow: hidden;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   z-index: 80;
@@ -3471,14 +3473,27 @@ body.dashboard-page .notification-head p {
 }
 
 body.dashboard-page .notification-list {
+  min-height: 42px;
+  height: auto;
   max-height: 360px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.45rem 0.55rem 0.55rem;
+}
+
+body.dashboard-page .notification-empty {
+  margin: 0;
+  padding: 0.4rem 0.25rem;
+  line-height: 1.4;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 body.dashboard-page .notification-item {
   display: flex;
   gap: 12px;
   padding: 12px;
+  border-radius: 0.55rem;
   border-bottom: 1px solid rgba(0, 229, 255, 0.06);
   cursor: pointer;
   transition: background 0.2s;

@@ -166,6 +166,7 @@ const bioCount = document.querySelector<HTMLElement>('#bio-count');
 const passwordForm = document.querySelector<HTMLFormElement>('#password-form');
 const newPasswordInput = document.querySelector<HTMLInputElement>('#new-password');
 const passwordStrengthBar = document.querySelector<HTMLElement>('#password-strength-bar');
+const adminFavicon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
 const dashboardProfileAvatar = document.querySelector<HTMLElement>('#dashboard-profile-avatar');
 const dashboardProfileName = document.querySelector<HTMLElement>('#dashboard-profile-name');
 const dashboardProfileTitle = document.querySelector<HTMLElement>('#dashboard-profile-title');
@@ -372,6 +373,14 @@ async function adminFetch(url: string, options: RequestInit = {}): Promise<Respo
 
 function showToast(message: string, type: ToastType): void {
   if (!toastRoot) return;
+  // Prevent duplicate notifications
+  const existingToasts = Array.from(toastRoot.querySelectorAll('.toast'));
+  for (const t of existingToasts) {
+    if (t.textContent === message) {
+      t.remove();
+    }
+  }
+
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
   toast.textContent = message;
@@ -444,7 +453,7 @@ function renderNotifications(): void {
   notificationBadge.classList.toggle('hidden', unread <= 0);
 
   if (notificationItems.length === 0) {
-    notificationList.innerHTML = '<p class="muted">No notifications yet.</p>';
+    notificationList.innerHTML = '<p class="muted notification-empty">No notifications yet.</p>';
     return;
   }
 
@@ -698,6 +707,20 @@ function withCacheVersion(url: string, version?: string | null): string {
   return `${url}${separator}v=${encodeURIComponent(version)}`;
 }
 
+function setAdminFavicon(url?: string, version?: string | null): void {
+  if (!adminFavicon) return;
+
+  const remoteUrl = (url ?? '').trim();
+  if (!remoteUrl || !/^https?:\/\//i.test(remoteUrl)) {
+    adminFavicon.href = '/favicon.svg';
+    adminFavicon.type = 'image/svg+xml';
+    return;
+  }
+
+  adminFavicon.href = withCacheVersion(remoteUrl, version);
+  adminFavicon.removeAttribute('type');
+}
+
 function filteredMessages(): AdminMessage[] {
   if (currentFilter === 'unread') return allMessages.filter((item) => !item.isRead);
   if (currentFilter === 'starred') return allMessages.filter((item) => item.isStarred);
@@ -933,12 +956,14 @@ function renderProfileImage(url?: string, version?: string | null): void {
 
   const remoteUrl = (url ?? '').trim();
   if (remoteUrl && /^https?:\/\//i.test(remoteUrl)) {
+    setAdminFavicon(remoteUrl, version);
     const source = withCacheVersion(remoteUrl, version);
     const previewImage = document.createElement('img');
     previewImage.src = source;
     previewImage.alt = 'Profile image';
     previewImage.addEventListener('error', () => {
       profileImagePreview.replaceChildren(initialsNode.cloneNode(true));
+      setAdminFavicon();
     });
     profileImagePreview.replaceChildren(previewImage);
 
@@ -953,6 +978,7 @@ function renderProfileImage(url?: string, version?: string | null): void {
     }
     return;
   }
+  setAdminFavicon();
   profileImagePreview.replaceChildren(initialsNode);
   if (dashboardProfileAvatar) dashboardProfileAvatar.textContent = initials;
 }
