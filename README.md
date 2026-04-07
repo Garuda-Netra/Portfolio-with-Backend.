@@ -29,7 +29,7 @@ cd server && npm install
 
 ### 2) Add environment variables
 
-Create a root .env file (D:\PORTFo.lio\.env) with at least:
+Create a root .env file :
 
 ```env
 MONGO_URI=your_mongodb_connection_string
